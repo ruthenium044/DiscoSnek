@@ -19,9 +19,17 @@ public class Movement : MonoBehaviour
         Vector3 step = (Vector3Int) currentDirection;
         step.x *= grid.TileSize.x;
         step.y *= grid.TileSize.y;
-        transform.position += step;
+        
+        Vector3 newPosition = transform.position + step;
+        Vector2Int newGridPos = grid.WorldToGrid(newPosition);
+        
+        if (!grid.IsInBounds(newGridPos) || grid.Tiles[newGridPos.x, newGridPos.y] == null)
+        {
+            Debug.Log("None");
+        }
         
         RotateSprite(gameObject.transform, currentDirection);
+        transform.position = newPosition;
         
         yield return new WaitForSeconds(stepTime);
         StartCoroutine(TryStep());
