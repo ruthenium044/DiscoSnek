@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Grid : MonoBehaviour
@@ -11,15 +8,15 @@ public class Grid : MonoBehaviour
     
     private GameObject[,] tiles;
     private CellularAutomata cellularAutomata;
-    
-    public GameObject[,] Tiles => tiles;
 
+    public GameObject[,] Tiles => tiles;
     public Vector2Int TileSize => tileSize;
 
     private void Awake()
     {
         cellularAutomata = GetComponent<CellularAutomata>();
         cellularAutomata.InitializeGrid(gridSize);
+        GetComponent<FloodFill>().OptimizeGrid(cellularAutomata.GridCellularAutomata);
         
         tiles = new GameObject[gridSize.x, gridSize.y];
         FillGrid();
@@ -31,9 +28,14 @@ public class Grid : MonoBehaviour
         {
             for (int j = 0; j < gridSize.y; j++)
             {
-                if (cellularAutomata.GridCa[i, j] == 1)
+                if (cellularAutomata.GridCellularAutomata[i, j] == 0)
                 {
                     CreateTile(i, j);
+                }
+                if (cellularAutomata.GridCellularAutomata[i, j] == 2)
+                {
+                    CreateTile(i, j);
+                    tiles[i, j].GetComponent<SpriteRenderer>().color = Color.yellow;
                 }
             }
         }
@@ -49,7 +51,6 @@ public class Grid : MonoBehaviour
     public Vector2Int WorldToGrid(Vector3 worldPos)
     {
         Vector3 temp;
-        //worldPos -= new Vector3(offset.x, offset.y, 0);
         temp.x = worldPos.x / tileSize.x;
         temp.y = worldPos.y / tileSize.y;
         return new Vector2Int((int)temp.x, (int)temp.y);

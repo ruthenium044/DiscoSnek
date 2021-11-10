@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 1792104716}
   - component: {fileID: 1792104715}
   - component: {fileID: 1792104717}
+  - component: {fileID: 1792104718}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -351,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 326131257134354392, guid: c5b869555ff18ee4baaf34e8a009620c, type: 3}
-  gridSize: {x: 30, y: 20}
+  gridSize: {x: 50, y: 25}
   tileSize: {x: 16, y: 16}
 --- !u!4 &1792104716
 Transform:
@@ -361,7 +362,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792104714}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.020416, y: 8.385077, z: -55.1966}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -379,8 +380,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d3629f4e1768e4aa13da84e2228ce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fillPercentage: 0
-  lifecycleIterations: 0
+  fillPercentage: 49
+  lifecycleIterations: 5
+--- !u!114 &1792104718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792104714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa35a8362a3668f4a9725dadc4bf14f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1873964057
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,3 +492,60 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &8195794474650670117
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043506520669122855, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6696979431152920566, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
+      propertyPath: m_Name
+      value: Food
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}

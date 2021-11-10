@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CellularAutomata : MonoBehaviour
 {
     [SerializeField, Range(0, 100)] private int fillPercentage;
     [SerializeField] private int lifecycleIterations;
-    
-    private int[,] gridCA;
 
-    public int[,] GridCa => gridCA;
+    private string seed;
+    private int[,] gridCellularAutomata;
+
+    public int[,] GridCellularAutomata => gridCellularAutomata;
 
     public void InitializeGrid(Vector2Int gridSize)
     {
-        gridCA = new int[gridSize.x, gridSize.y];
+        gridCellularAutomata = new int[gridSize.x, gridSize.y];
         FillGrid(gridSize);
         for (int i = 0; i < lifecycleIterations; i++)
         {
@@ -23,45 +22,57 @@ public class CellularAutomata : MonoBehaviour
 
     private void FillGrid(Vector2Int gridSize)
     {
-        for (int i = 0; i < gridSize.x; i++)
+        seed =  System.DateTime.Now.ToString();
+        System.Random pseudoRandom = new System.Random(seed.GetHashCode());
+        
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int j = 0; j < gridSize.y; j++)
+            for (int y = 0; y < gridSize.y; y++)
             {
-                gridCA[i, j] = Random.Range(0, 1);
+                if (x == 0 || x == gridSize.x - 1 || y == 0 || y == gridSize.y - 1)
+                {
+                    gridCellularAutomata[x, y] = 1;
+                }
+                else
+                {
+                    gridCellularAutomata[x, y] = (pseudoRandom.Next(0, 100) < fillPercentage) ? 1 : 0;
+                }
             }
         }
     }
 
     private void OneCycle(Vector2Int gridSize)
     {
-        for (int i = 1; i < gridSize.x - 1; i++)
+        for (int x = 1; x < gridSize.x - 1; x++)
         {
-            for (int j = 1; j < gridSize.y - 1; j++)
+            for (int y = 1; y < gridSize.y - 1; y++)
             {
-                int neighbourCount = GetNeighbourCount(new Vector2Int(i, j));
-                if (neighbourCount < 3 || neighbourCount > 3)
+                int neighbourCount = GetNeighbourCount(new Vector2Int(x, y));
+                if (neighbourCount > 4)
                 {
-                    gridCA[i, j] = 1;
+                    gridCellularAutomata[x, y] = 1;
                 }
-                else
+                else if (neighbourCount < 4)
                 {
-                    gridCA[i, j] = 0;
+                    gridCellularAutomata[x, y] = 0;
                 }
             }
         }
     }
 
-    private void RemoveInacesable()
-    {
-        //fill each 0. find biggest one. remove the rest
-    }
-    
     private int GetNeighbourCount(Vector2Int tilePosition)
     {
-        int neighbourCount = gridCA[tilePosition.x, tilePosition.y + 1] + 
-                             gridCA[tilePosition.x, tilePosition.y - 1] +
-                             gridCA[tilePosition.x + 1, tilePosition.y] + 
-                             gridCA[tilePosition.x - 1, tilePosition.y];
+        int neighbourCount = 0;
+        for (int neighbourX = tilePosition.x - 1; neighbourX <= tilePosition.x + 1; neighbourX++)
+        {
+            for (int neighbourY = tilePosition.y - 1; neighbourY <= tilePosition.y + 1; neighbourY++)
+            {
+                if (neighbourX != tilePosition.x || neighbourY != tilePosition.y)
+                {
+                    neighbourCount += gridCellularAutomata[neighbourX, neighbourY];
+                }
+            }
+        }
         return neighbourCount;
     }
 }
