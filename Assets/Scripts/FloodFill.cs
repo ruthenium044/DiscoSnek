@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FloodFill : MonoBehaviour
 {
-    public void OptimizeGrid(int[,] grid)
+    public List<Vector2Int> GetBiggestCave(int[,] grid)
     {
         Vector2Int gridSize = new Vector2Int(grid.GetLength(0), grid.GetLength(1));
         List<Vector2Int> allTiles = GetAllTiles(grid, gridSize);
@@ -13,7 +13,8 @@ public class FloodFill : MonoBehaviour
         List<List<Vector2Int>> caves = new List<List<Vector2Int>>();
         int biggestCaveIndex = 0;
         biggestCaveIndex = GetBiggestCave(grid, allTiles, visited, caves, biggestCaveIndex);
-        DeleteSmallCaves(grid, caves, biggestCaveIndex);
+
+        return caves[biggestCaveIndex];
     }
 
     private void Flood(int[,] grid, Vector2Int currentPosition, bool[,] visited, List<Vector2Int> currentCave)
@@ -90,22 +91,9 @@ public class FloodFill : MonoBehaviour
         }
         return biggestCaveIndex;
     }
+    
 
-    private static void DeleteSmallCaves(int[,] grid, List<List<Vector2Int>> caves, int biggestCaveIndex)
-    {
-        foreach (var cave in caves)
-        {
-            if (cave != caves[biggestCaveIndex])
-            {
-                foreach (var position in cave)
-                {
-                    grid[position.x, position.y] = 1;
-                }
-            }
-        }
-    }
-
-    private bool IsPositionValid(int[,] grid, int x, int y)
+    private static bool IsPositionValid(int[,] grid, int x, int y)
     {
         Vector2Int gridSize = new Vector2Int(grid.GetLength(0), grid.GetLength(1));
         return x >= 0 && y >= 0 && x <= gridSize.x && y <= gridSize.y;

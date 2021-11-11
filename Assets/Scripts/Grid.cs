@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Grid : MonoBehaviour
@@ -7,35 +9,44 @@ public class Grid : MonoBehaviour
     [SerializeField] private Vector2Int tileSize;
     
     private GameObject[,] tiles;
+    private List<Vector2Int> playableTiles;
     private CellularAutomata cellularAutomata;
+    private FoodSpawner foodSpawner;
 
-    public GameObject[,] Tiles => tiles;
+    [SerializeField] private Snek snek;
+    private Collision collision;
+    
+    private string seed;
+    private System.Random pseudoRandom;
+    
     public Vector2Int TileSize => tileSize;
 
     private void Awake()
     {
+        seed =  System.DateTime.Now.ToString();
+        pseudoRandom = new System.Random(seed.GetHashCode());
+        
         cellularAutomata = GetComponent<CellularAutomata>();
         cellularAutomata.InitializeGrid(gridSize);
-        GetComponent<FloodFill>().OptimizeGrid(cellularAutomata.GridCellularAutomata);
-        
+        playableTiles = GetComponent<FloodFill>().GetBiggestCave(cellularAutomata.Grid);
+
+        foodSpawner = GetComponent<FoodSpawner>();
+        collision = GetComponent<Collision>();
         tiles = new GameObject[gridSize.x, gridSize.y];
         FillGrid();
-    }
 
+        StartCoroutine(foodSpawner.SpawnFood(this));
+    }
+    
     private void FillGrid()
     {
-        for (int i = 0; i < gridSize.x; i++)
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int j = 0; j < gridSize.y; j++)
+            for (int y = 0; y < gridSize.y; y++)
             {
-                if (cellularAutomata.GridCellularAutomata[i, j] == 0)
+                if (playableTiles.Contains(new Vector2Int(x, y)))
                 {
-                    CreateTile(i, j);
-                }
-                if (cellularAutomata.GridCellularAutomata[i, j] == 2)
-                {
-                    CreateTile(i, j);
-                    tiles[i, j].GetComponent<SpriteRenderer>().color = Color.yellow;
+                    CreateTile(x, y);
                 }
             }
         }
@@ -46,6 +57,11 @@ public class Grid : MonoBehaviour
         GameObject temp = Instantiate(tilePrefab);
         tiles[x, y] = temp;
         tiles[x, y].transform.position = new Vector3(x * tileSize.x, y * tileSize.y, 0);
+    }
+
+    public bool CollideFood()
+    {
+        return collision.CollideAndRemove(snek.transform, foodSpawner.foods, this);
     }
 
     public Vector2Int WorldToGrid(Vector3 worldPos)
@@ -61,10 +77,13 @@ public class Grid : MonoBehaviour
         return tiles[gridPos.x, gridPos.y].transform.position;
     }
 
-    public bool IsInBounds(Vector2Int gridPosition)
+    public bool IsIndexValid(Vector2Int gridPosition)
     {
-        bool boundsX = gridPosition.x >= 0 && gridPosition.x < gridSize.x ;
-        bool boundsY = gridPosition.y >= 0 && gridPosition.y < gridSize.y;
-        return boundsX && boundsY;
+        return playableTiles.Contains(gridPosition);
+    }
+
+    public Vector2Int GetRandomPosition()
+    {
+        return  playableTiles[pseudoRandom.Next(0, playableTiles.Count)];
     }
 }

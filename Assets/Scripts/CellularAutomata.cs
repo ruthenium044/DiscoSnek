@@ -6,13 +6,13 @@ public class CellularAutomata : MonoBehaviour
     [SerializeField] private int lifecycleIterations;
 
     private string seed;
-    private int[,] gridCellularAutomata;
+    private int[,] grid;
 
-    public int[,] GridCellularAutomata => gridCellularAutomata;
+    public int[,] Grid => grid;
 
     public void InitializeGrid(Vector2Int gridSize)
     {
-        gridCellularAutomata = new int[gridSize.x, gridSize.y];
+        grid = new int[gridSize.x, gridSize.y];
         FillGrid(gridSize);
         for (int i = 0; i < lifecycleIterations; i++)
         {
@@ -31,11 +31,11 @@ public class CellularAutomata : MonoBehaviour
             {
                 if (x == 0 || x == gridSize.x - 1 || y == 0 || y == gridSize.y - 1)
                 {
-                    gridCellularAutomata[x, y] = 1;
+                    grid[x, y] = 1;
                 }
                 else
                 {
-                    gridCellularAutomata[x, y] = (pseudoRandom.Next(0, 100) < fillPercentage) ? 1 : 0;
+                    grid[x, y] = (pseudoRandom.Next(0, 100) < fillPercentage) ? 1 : 0;
                 }
             }
         }
@@ -50,11 +50,11 @@ public class CellularAutomata : MonoBehaviour
                 int neighbourCount = GetNeighbourCount(new Vector2Int(x, y));
                 if (neighbourCount > 4)
                 {
-                    gridCellularAutomata[x, y] = 1;
+                    grid[x, y] = 1;
                 }
                 else if (neighbourCount < 4)
                 {
-                    gridCellularAutomata[x, y] = 0;
+                    grid[x, y] = 0;
                 }
             }
         }
@@ -69,7 +69,7 @@ public class CellularAutomata : MonoBehaviour
             {
                 if (neighbourX != tilePosition.x || neighbourY != tilePosition.y)
                 {
-                    neighbourCount += gridCellularAutomata[neighbourX, neighbourY];
+                    neighbourCount += grid[neighbourX, neighbourY];
                 }
             }
         }

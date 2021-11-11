@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,27 +6,25 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [SerializeField] private Grid grid;
-    [SerializeField] private LayerMask gridLayer;
-    
     [SerializeField] private float stepTime;
 
     private Vector2Int currentDirection;
-
     public readonly List<Vector2Int> Directions = new List<Vector2Int>
         {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
-    
+
+    private void Start()
+    {
+        transform.position = grid.GridToWorld(grid.GetRandomPosition());
+    }
+
     public IEnumerator TryStep()
     {
-        Vector3 step = (Vector3Int) currentDirection;
-        step.x *= grid.TileSize.x;
-        step.y *= grid.TileSize.y;
-        
-        Vector3 newPosition = transform.position + step;
+        var newPosition = GetNewPosition();
         Vector2Int newGridPos = grid.WorldToGrid(newPosition);
         
-        if (!grid.IsInBounds(newGridPos) || grid.Tiles[newGridPos.x, newGridPos.y] == null)
+        if (!grid.IsIndexValid(new Vector2Int(newGridPos.x, newGridPos.y)))
         {
-            Debug.Log("None");
+            Debug.Log("Death");
         }
         
         RotateSprite(gameObject.transform, currentDirection);
@@ -33,6 +32,21 @@ public class Movement : MonoBehaviour
         
         yield return new WaitForSeconds(stepTime);
         StartCoroutine(TryStep());
+        
+        if (grid.CollideFood())
+        {
+            Debug.Log("Food");
+        }
+    }
+
+    private Vector3 GetNewPosition()
+    {
+        Vector3 step = (Vector3Int) currentDirection;
+        step.x *= grid.TileSize.x;
+        step.y *= grid.TileSize.y;
+
+        Vector3 newPosition = transform.position + step;
+        return newPosition;
     }
 
     public void UpdateDirection(Vector2Int direction)
