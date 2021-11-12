@@ -1,23 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Body : MonoBehaviour
 {
+    [SerializeField] private GameObject bodyPrefab;
     [SerializeField] private Sprite bodySprite;
     [SerializeField] private Sprite tailSprite;
 
-    private SpriteRenderer spriteRenderer;
-   
+    private LinkedList<GameObject> bodyParts;
+
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = tailSprite;
+        bodyParts = new LinkedList<GameObject>();
+        bodyParts.AddFront(gameObject);
+        //spriteRenderer = GetComponent<SpriteRenderer>();
+        //spriteRenderer.sprite = tailSprite;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddBody()
     {
-        
+        GameObject temp = Instantiate(bodyPrefab);
+        bodyParts.AddAfter(bodyParts.head, temp);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AddBody();
+        }
     }
 }

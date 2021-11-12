@@ -22,9 +22,4 @@ public class FoodSpawner : MonoBehaviour
         temp.transform.position = grid.GridToWorld(grid.GetRandomPosition());
         foods.Add(temp);
     }
-
-    public void EatFood(GameObject food)
-    {
-        
-    }
 }
