@@ -15,6 +15,8 @@ public class LinkedList<T>
             set => data = value;
         }
 
+        public Node NextNode => nextNode;
+
         internal Node(T d)
         {
             data = d;

@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Grid grid;
     [SerializeField] private float stepTime;
 
+    private Body body;
     private Vector2Int currentDirection;
     public readonly List<Vector2Int> Directions = new List<Vector2Int>
         {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
@@ -15,6 +16,7 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         transform.position = grid.GridToWorld(grid.GetRandomPosition());
+   
     }
 
     public IEnumerator TryStep()
@@ -28,7 +30,11 @@ public class Movement : MonoBehaviour
         }
         
         RotateSprite(gameObject.transform, currentDirection);
+        
+        Vector3 previousPosition = transform.position;
         transform.position = newPosition;
+        
+        GetComponent<Body>().MoveBodyParts(previousPosition);
         
         yield return new WaitForSeconds(stepTime);
         StartCoroutine(TryStep());

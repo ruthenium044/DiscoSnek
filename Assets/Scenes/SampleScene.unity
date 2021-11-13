@@ -331,8 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyPrefab: {fileID: 4796301861715941693, guid: 13599a6fa80c74845a092d897715da04, type: 3}
-  bodySprite: {fileID: 859378227890494688, guid: fb30017a676234d4291370c45e290af6, type: 3}
-  tailSprite: {fileID: 7351883062737083319, guid: fb30017a676234d4291370c45e290af6, type: 3}
+  tailPrefab: {fileID: 4796301861715941693, guid: 33ce81e90ad1d844e8335e59238f6bfe, type: 3}
 --- !u!1 &1792104714
 GameObject:
   m_ObjectHideFlags: 0
