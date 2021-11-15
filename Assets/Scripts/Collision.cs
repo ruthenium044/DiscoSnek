@@ -1,31 +1,32 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Collision : MonoBehaviour
 {
-    public bool CollideAndRemove(Transform transform, List<GameObject> other, Grid grid)
+    public bool CollideAndRemoveFood(Transform snakeTransform, List<GameObject> foods, Grid grid)
     {
-        foreach (var item in other)
+        foreach (var item in foods)
         {
-            if (grid.WorldToGrid(transform.position) == grid.WorldToGrid(item.transform.position))
+            if (grid.WorldToGrid(snakeTransform.position) == grid.WorldToGrid(item.transform.position))
             {
+                foods.Remove(item);
                 Destroy(item.gameObject);
-                other.Remove(item);
                 return true;
             } 
         }
         return false;
     }
     
-    public bool Collide(Transform transform, List<GameObject> other, Grid grid)
+    public bool CollideBody(Transform snakeTransform, Body body, Grid grid)
     {
-        foreach (var item in other)
+        var currentNode = body.BodyParts.head.nextNode;
+        while (currentNode != null)
         {
-            if (grid.WorldToGrid(transform.position) == grid.WorldToGrid(item.transform.position))
+            if (grid.WorldToGrid(snakeTransform.position) == grid.WorldToGrid(currentNode.Data.transform.position))
             {
                 return true;
-            } 
+            }
+            currentNode = currentNode.nextNode;
         }
         return false;
     }

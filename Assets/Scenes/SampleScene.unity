@@ -304,6 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb096f43c1ac644c9671bce5f04a128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 1792104715}
+  stepTime: 0.2
 --- !u!114 &1390593700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,8 +318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ca9b9f6b7742543badc0b459c47be8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 1792104715}
-  stepTime: 0.6
 --- !u!114 &1390593701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodPrefab: {fileID: 6696979431152920566, guid: 3700092b3c8d8d649aeaa057b78d47c9, type: 3}
-  foodSpawnTime: 7
+  foodSpawnTime: 5
   foods: []
 --- !u!114 &1792104720
 MonoBehaviour:

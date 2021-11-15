@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class Grid : MonoBehaviour
     private List<Vector2Int> playableTiles;
     private CellularAutomata cellularAutomata;
     private FoodSpawner foodSpawner;
+    private Body body;
 
     [SerializeField] private Snek snek;
     private Collision collision;
@@ -23,21 +25,27 @@ public class Grid : MonoBehaviour
 
     private void Awake()
     {
-        seed =  System.DateTime.Now.ToString();
+        seed = DateTime.Now.ToString();
         pseudoRandom = new System.Random(seed.GetHashCode());
         
         cellularAutomata = GetComponent<CellularAutomata>();
         cellularAutomata.InitializeGrid(gridSize);
-        playableTiles = GetComponent<FloodFill>().GetBiggestCave(cellularAutomata.Grid);
-
+        
         foodSpawner = GetComponent<FoodSpawner>();
+        body = snek.GetComponent<Body>();
+        
         collision = GetComponent<Collision>();
+        
+        playableTiles = GetComponent<FloodFill>().GetBiggestCave(cellularAutomata.Grid);
         tiles = new GameObject[gridSize.x, gridSize.y];
         FillGrid();
+    }
 
+    private void Start()
+    {
         StartCoroutine(foodSpawner.SpawnFood(this));
     }
-    
+
     private void FillGrid()
     {
         for (int x = 0; x < gridSize.x; x++)
@@ -61,7 +69,12 @@ public class Grid : MonoBehaviour
 
     public bool CollideFood()
     {
-        return collision.CollideAndRemove(snek.transform, foodSpawner.foods, this);
+        return collision.CollideAndRemoveFood(snek.transform, foodSpawner.foods, this);
+    }
+
+    public bool CollideBody()
+    {
+        return collision.CollideBody(snek.transform, body, this);
     }
 
     public Vector2Int WorldToGrid(Vector3 worldPos)

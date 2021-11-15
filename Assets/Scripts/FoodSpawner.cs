@@ -8,7 +8,7 @@ public class FoodSpawner : MonoBehaviour
     [SerializeField] private float foodSpawnTime;
 
     public List<GameObject> foods;
-    
+
     public IEnumerator SpawnFood(Grid grid)
     {
         SpawnRandomFood(grid);
@@ -22,4 +22,5 @@ public class FoodSpawner : MonoBehaviour
         temp.transform.position = grid.GridToWorld(grid.GetRandomPosition());
         foods.Add(temp);
     }
+
 }
