@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class FoodSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject foodPrefab;
+    [SerializeField] private List<GameObject> foodPrefabs;
     [SerializeField] private float foodSpawnTime;
 
-    public List<GameObject> foods;
+    [HideInInspector] public List<GameObject> foods;
 
     public IEnumerator SpawnFood(Grid grid)
     {
@@ -18,9 +18,9 @@ public class FoodSpawner : MonoBehaviour
     
     private void SpawnRandomFood(Grid grid)
     {
-        GameObject temp = Instantiate(foodPrefab);
+        int nextIndex = grid.GetRandomInt(0, foodPrefabs.Count);
+        GameObject temp = Instantiate(foodPrefabs[nextIndex]);
         temp.transform.position = grid.GridToWorld(grid.GetRandomPosition());
         foods.Add(temp);
     }
-
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,9 +66,9 @@ public class Grid : MonoBehaviour
         tiles[x, y].transform.position = new Vector3(x * tileSize.x, y * tileSize.y, 0);
     }
 
-    public bool CollideFood()
+    public bool CollideFood(out IPowerUp powerUp)
     {
-        return collision.CollideAndRemoveFood(snek.transform, foodSpawner.foods, this);
+        return collision.CollideAndRemoveFood(snek.transform, foodSpawner.foods, this, out powerUp);
     }
 
     public bool CollideBody()
@@ -97,6 +96,12 @@ public class Grid : MonoBehaviour
 
     public Vector2Int GetRandomPosition()
     {
-        return  playableTiles[pseudoRandom.Next(0, playableTiles.Count)];
+        return playableTiles[pseudoRandom.Next(0, playableTiles.Count)];
     }
+
+    public int GetRandomInt(int min, int max)
+    {
+        return pseudoRandom.Next(min, max);
+    }
+    
 }

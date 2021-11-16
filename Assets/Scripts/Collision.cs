@@ -3,17 +3,19 @@ using UnityEngine;
 
 public class Collision : MonoBehaviour
 {
-    public bool CollideAndRemoveFood(Transform snakeTransform, List<GameObject> foods, Grid grid)
+    public bool CollideAndRemoveFood(Transform snakeTransform, List<GameObject> foods, Grid grid, out IPowerUp powerUp)
     {
         foreach (var item in foods)
         {
             if (grid.WorldToGrid(snakeTransform.position) == grid.WorldToGrid(item.transform.position))
             {
                 foods.Remove(item);
+                powerUp = item.GetComponent<IPowerUp>();
                 Destroy(item.gameObject);
                 return true;
             } 
         }
+        powerUp = null;
         return false;
     }
     

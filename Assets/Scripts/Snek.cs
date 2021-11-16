@@ -7,14 +7,20 @@ public class Snek : MonoBehaviour
 {
     [SerializeField] private Grid grid;
     [SerializeField] private float stepTime;
+    [SerializeField] private GameObject gameOverObject;
+    [SerializeField] private float dropTime;
+    
     private Movement movement;
-    private Body body;
+    [HideInInspector] public Body body;
     private Vector2Int currentDirection;
     
     bool gameOver;
-
+    private IPowerUp powerUp;
+    [HideInInspector] public float speedModifier;
+ 
     private void Awake()
     {
+        gameOverObject.SetActive(false);
         movement = GetComponent<Movement>();
         body = GetComponent<Body>();
     }
@@ -34,10 +40,15 @@ public class Snek : MonoBehaviour
             StartCoroutine(ExecuteSnek());
         }
 
-        yield return new WaitForSeconds(stepTime);
+        yield return new WaitForSeconds(stepTime + speedModifier);
         StartCoroutine(Tick());
-        if (grid.CollideFood())
+        if (grid.CollideFood(out var power))
         {
+            powerUp = power;
+            if (powerUp != null)
+            {
+                StartCoroutine(powerUp.StartPowerUp(this));
+            }
             body.AddBodyPart();
         }
     }
@@ -45,11 +56,24 @@ public class Snek : MonoBehaviour
     private IEnumerator ExecuteSnek()
     {
         gameOver = true;
-        Debug.Log("Game over");
+        StartCoroutine(DropGameOver());
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene(0);
     }
 
+    private IEnumerator DropGameOver()
+    {
+        gameOverObject.SetActive(true);
+        float t = 0f;
+        while (t < 1f)
+        {
+            gameOverObject.transform.localPosition = Vector3.Lerp(gameOverObject.transform.localPosition, 
+                Vector3.zero, Mathf.Sqrt(1 - (t - 1) * (t - 1)));
+            t += Time.deltaTime * dropTime;
+            yield return null;
+        }
+    }
+    
     //Handle input?
     private void Update()
     {
