@@ -15,10 +15,7 @@ Shader "Unlit/Shader"
 
         Pass
         {
-            Cull Off
             ZWrite Off
-            ZTest LEqual
-
             Blend DstColor SrcColor
             
             CGPROGRAM

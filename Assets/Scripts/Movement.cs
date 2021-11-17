@@ -15,7 +15,6 @@ public class Movement : MonoBehaviour
         {
             return false;
         }
-        
         RotateSprite(currentDirection);
         
         Vector3 previousPosition = transform.position;
@@ -23,7 +22,6 @@ public class Movement : MonoBehaviour
         transform.position = newPosition;
         
         body.MoveBodyParts(previousPosition, previousRotation);
-
         return true;
     }
 

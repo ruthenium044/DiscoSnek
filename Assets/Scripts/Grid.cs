@@ -103,5 +103,28 @@ public class Grid : MonoBehaviour
     {
         return pseudoRandom.Next(min, max);
     }
-    
+
+    public Vector2Int GetStartPosition()
+    {
+        int smallestY = gridSize.y - 1;
+        foreach (var tile in playableTiles)
+        {
+            if (tile.y < smallestY)
+            {
+                smallestY = tile.y;
+            }
+        }
+
+        List<Vector2Int> smallestTiles = new List<Vector2Int>();
+        foreach (var tile in playableTiles)
+        {
+            if (tile.y == smallestY)
+            {
+                smallestTiles.Add(tile);
+            }
+        }
+        Vector2Int middleTile = smallestTiles[smallestTiles.Count / 2];
+        int index = playableTiles.IndexOf(middleTile);
+        return playableTiles[index];
+    }
 }

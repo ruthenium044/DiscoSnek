@@ -17,9 +17,11 @@ public class Snek : MonoBehaviour
     bool gameOver;
     private IPowerUp powerUp;
     [HideInInspector] public float speedModifier;
+    [SerializeField] public GameObject screenOverlay;
  
     private void Awake()
     {
+        screenOverlay.SetActive(false);
         gameOverObject.SetActive(false);
         movement = GetComponent<Movement>();
         body = GetComponent<Body>();
@@ -28,7 +30,7 @@ public class Snek : MonoBehaviour
     private void Start()
     {
         UpdateDirection(movement.Directions[0]);
-        transform.position = grid.GridToWorld(grid.GetRandomPosition());
+        transform.position = grid.GridToWorld(grid.GetStartPosition());
         StartCoroutine(Tick());
     }
 
