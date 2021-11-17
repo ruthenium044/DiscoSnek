@@ -277,7 +277,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 250
+  orthographic size: 200
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -301,7 +301,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 400, y: 200, z: -10}
+  m_LocalPosition: {x: 341, y: 191, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 1390593699}
   - component: {fileID: 1390593700}
   - component: {fileID: 1390593701}
+  - component: {fileID: 1390593702}
   m_Layer: 0
   m_Name: Snek
   m_TagString: Untagged
@@ -438,6 +439,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyPrefab: {fileID: 4796301861715941693, guid: 13599a6fa80c74845a092d897715da04, type: 3}
   tailPrefab: {fileID: 4796301861715941693, guid: 33ce81e90ad1d844e8335e59238f6bfe, type: 3}
+--- !u!114 &1390593702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390593696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113557e927b985645af719b57cf2660d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOver: 0
 --- !u!1 &1658460419
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +708,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 326131257134354392, guid: c5b869555ff18ee4baaf34e8a009620c, type: 3}
   gridSize: {x: 50, y: 25}
   tileSize: {x: 16, y: 16}
+  camera: {fileID: 519420031}
   snek: {fileID: 1390593699}
 --- !u!4 &1792104716
 Transform:
