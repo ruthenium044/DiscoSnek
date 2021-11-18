@@ -1,5 +1,4 @@
-# ProfessorSnek
-Actually disco snek 
+# Disco Snek
 
 
 <img src="https://user-images.githubusercontent.com/31730144/142380645-540cf20e-ef94-450d-bbc4-207e1a1703c3.gif" width = "300">
