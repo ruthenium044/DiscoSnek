@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Grid : MonoBehaviour
@@ -91,6 +90,11 @@ public class Grid : MonoBehaviour
     {
         return tiles[gridPos.x, gridPos.y].transform.position;
     }
+    
+    public Vector3 GridToWorld(Vector2Int gridPos, Vector2Int tileSize)
+    {
+        return new Vector3(gridPos.x * tileSize.x, gridPos.y * tileSize.y);
+    }
 
     public bool IsIndexValid(Vector2Int gridPosition)
     {
@@ -117,7 +121,6 @@ public class Grid : MonoBehaviour
                 smallestY = tile.y;
             }
         }
-
         List<Vector2Int> smallestTiles = new List<Vector2Int>();
         foreach (var tile in playableTiles)
         {
@@ -134,56 +137,49 @@ public class Grid : MonoBehaviour
 
     private void SetCameraSize()
     {
-        float screenRatio = Screen.width / Screen.height;
-
-        Vector4 playableSize = GetPlayableSize();
-        Vector2 bottomCorner = new Vector2(playableSize.x * tileSize.x, playableSize.y * tileSize.y);
-        Vector2 topCorner = new Vector2(playableSize.z * tileSize.x, playableSize.w * tileSize.y);
-        Vector3 mid = new Vector3((topCorner.x + bottomCorner.x) / 2, (topCorner.y + bottomCorner.y) / 2,
-            camera.transform.position.z);
+        (Vector2Int top, Vector2Int bottom) = GetPlayableSize();
+        Vector2 bottomCorner = GridToWorld(top, tileSize);
+        Vector2 topCorner =GridToWorld(bottom, tileSize);
+        Vector3 mid = new Vector3((topCorner.x + bottomCorner.x) / 2, 
+                                    (topCorner.y + bottomCorner.y) / 2, camera.transform.position.z);
+        camera.transform.position = mid;
         
-        //todo tweak this
-        float gridRatio = topCorner.x / topCorner.y;
-
-        if (screenRatio > gridRatio)
+        float gridRatio = (topCorner.x - bottomCorner.x) / (topCorner.y + - bottomCorner.y);
+        if (camera.aspect >= gridRatio)
         {
             camera.orthographicSize = topCorner.y / 2;
         }
         else
         {
-            float difference = gridRatio / screenRatio;
+            float difference = gridRatio / camera.aspect;
             camera.orthographicSize = topCorner.y / 2 * difference;
         }
-        camera.transform.position = mid;
     }
 
-    private Vector4 GetPlayableSize()
+    private (Vector2Int, Vector2Int) GetPlayableSize()
     {
         Vector2Int smallestPoints = gridSize;
         Vector2Int biggestPoints = Vector2Int.zero;
         foreach (var tile in playableTiles)
         {
-            if (tile.y < smallestPoints.y)
-            {
-                smallestPoints.y = tile.y;
-            }
-
             if (tile.x < smallestPoints.x)
             {
                 smallestPoints.x = tile.x;
             }
-
-            if (tile.y > biggestPoints.y)
-            {
-                biggestPoints.y = tile.y;
-            }
-
             if (tile.x > biggestPoints.x)
             {
                 biggestPoints.x = tile.x;
             }
+            if (tile.y < smallestPoints.y)
+            {
+                smallestPoints.y = tile.y;
+            }
+            if (tile.y > biggestPoints.y)
+            {
+                biggestPoints.y = tile.y;
+            }
         }
-        return new Vector4(smallestPoints.x, smallestPoints.y, biggestPoints.x, biggestPoints.y);
+        return (smallestPoints, biggestPoints);
     }
 
 }
