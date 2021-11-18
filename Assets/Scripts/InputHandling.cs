@@ -8,6 +8,7 @@ public class InputHandling : MonoBehaviour
     private Vector2Int inputDirection;
     private Vector2Int currentDirection;
     private Movement movement;
+    private Vector2Int ignoreDirection;
     [HideInInspector] public bool gameOver;
 
     public Vector2Int CurrentDirection => currentDirection;
@@ -33,11 +34,16 @@ public class InputHandling : MonoBehaviour
         }
     }
 
+    public void IgnoreDirection(Vector2Int direction)
+    {
+        ignoreDirection = direction;
+    }
+
     private bool IsDirectionValid(Vector2Int direction)
     {
         bool notZero = direction != Vector2Int.zero;
-        bool notOpposite = -direction != currentDirection;
-        bool isDirectionValid = notOpposite && notZero;
+        bool notIgnored = ignoreDirection != direction;
+        bool isDirectionValid = notIgnored && notZero;
         return isDirectionValid;
     }
 

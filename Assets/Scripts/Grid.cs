@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Grid : MonoBehaviour
@@ -129,7 +130,6 @@ public class Grid : MonoBehaviour
                 smallestTiles.Add(tile);
             }
         }
-
         Vector2Int kindaMiddleTile = smallestTiles[smallestTiles.Count / 2];
         int index = playableTiles.IndexOf(kindaMiddleTile);
         return playableTiles[index];
@@ -143,7 +143,7 @@ public class Grid : MonoBehaviour
         Vector3 mid = new Vector3((topCorner.x + bottomCorner.x) / 2, 
                                     (topCorner.y + bottomCorner.y) / 2, camera.transform.position.z);
         camera.transform.position = mid;
-        
+
         float gridRatio = (topCorner.x - bottomCorner.x) / (topCorner.y + - bottomCorner.y);
         if (camera.aspect >= gridRatio)
         {

@@ -9,6 +9,7 @@ public class Collision : MonoBehaviour
         {
             if (grid.WorldToGrid(snakeTransform.position) == grid.WorldToGrid(item.transform.position))
             {
+                GetComponent<Audio>().Play(Random.Range(1, 4));
                 foods.Remove(item);
                 powerUp = item.GetComponent<IPowerUp>();
                 Destroy(item.gameObject);
@@ -26,6 +27,7 @@ public class Collision : MonoBehaviour
         {
             if (grid.WorldToGrid(snakeTransform.position) == grid.WorldToGrid(currentNode.Data.transform.position))
             {
+                GetComponent<Audio>().Play(0);
                 return true;
             }
             currentNode = currentNode.nextNode;

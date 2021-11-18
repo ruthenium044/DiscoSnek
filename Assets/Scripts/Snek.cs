@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,11 +8,10 @@ public class Snek : MonoBehaviour
     [SerializeField] private float stepTime;
     [SerializeField] private GameObject gameOverObject;
     [SerializeField] private float dropTime;
+    [SerializeField] private Audio audio;
     
     private Movement movement;
     private InputHandling inputHandling;
-
-    private Vector2Int currentDirection;
     [HideInInspector] public Body body;
     
     private IPowerUp powerUp;
@@ -32,21 +30,26 @@ public class Snek : MonoBehaviour
     private void Start()
     {
         transform.position = grid.GridToWorld(grid.GetStartPosition());
-        currentDirection = inputHandling.CurrentDirection;
         StartCoroutine(Tick());
     }
 
     private IEnumerator Tick()
     {
+        Vector2Int currentDirection = inputHandling.CurrentDirection;
         if (!movement.TryStep(grid, body, currentDirection) || grid.CollideBody())
         {
             StopAllCoroutines();
             StartCoroutine(ExecuteSnek());
         }
+        inputHandling.IgnoreDirection(-currentDirection);
         yield return new WaitForSeconds(stepTime + speedModifier);
-        currentDirection = inputHandling.CurrentDirection;
         
         StartCoroutine(Tick());
+        EatFood();
+    }
+
+    private void EatFood()
+    {
         if (grid.CollideFood(out var power))
         {
             powerUp = power;
@@ -54,6 +57,7 @@ public class Snek : MonoBehaviour
             {
                 StartCoroutine(powerUp.StartPowerUp(this));
             }
+
             body.AddBodyPart();
         }
     }
@@ -61,6 +65,7 @@ public class Snek : MonoBehaviour
     private IEnumerator ExecuteSnek() 
     {
         inputHandling.gameOver = true;
+        audio.Play(0);
         StartCoroutine(DropGameOver());
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene(0);
@@ -78,6 +83,4 @@ public class Snek : MonoBehaviour
             yield return null;
         }
     }
-    
-   
 }
