@@ -407,13 +407,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 1792104715}
-  stepTime: 0.3
+  stepTime: 0.2
   gameOverObject: {fileID: 1678836940}
   dropTime: 0.001
+  screenOverlay: {fileID: 1771292973}
   audio: {fileID: 1792104721}
   body: {fileID: 0}
   speedModifier: 0
-  screenOverlay: {fileID: 1771292973}
 --- !u!114 &1390593700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,8 +711,8 @@ MonoBehaviour:
   tilePrefab: {fileID: 326131257134354392, guid: c5b869555ff18ee4baaf34e8a009620c, type: 3}
   gridSize: {x: 50, y: 25}
   tileSize: {x: 16, y: 16}
-  camera: {fileID: 519420031}
   snek: {fileID: 1390593699}
+  mainCamera: {fileID: 519420031}
 --- !u!4 &1792104716
 Transform:
   m_ObjectHideFlags: 0

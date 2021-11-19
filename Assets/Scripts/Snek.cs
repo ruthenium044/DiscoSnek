@@ -6,17 +6,18 @@ public class Snek : MonoBehaviour
 {
     [SerializeField] private Grid grid;
     [SerializeField] private float stepTime;
+    
     [SerializeField] private GameObject gameOverObject;
     [SerializeField] private float dropTime;
+    [SerializeField] public GameObject screenOverlay;
     [SerializeField] private Audio audio;
     
+    [HideInInspector] public Body body;
     private Movement movement;
     private InputHandling inputHandling;
-    [HideInInspector] public Body body;
     
     private IPowerUp powerUp;
     [HideInInspector] public float speedModifier;
-    [SerializeField] public GameObject screenOverlay;
  
     private void Awake()
     {

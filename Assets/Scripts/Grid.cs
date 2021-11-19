@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Grid : MonoBehaviour
@@ -8,21 +7,20 @@ public class Grid : MonoBehaviour
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private Vector2Int gridSize;
     [SerializeField] private Vector2Int tileSize;
-    [SerializeField] private Camera camera;
-
-    private GameObject[,] tiles;
-    private List<Vector2Int> playableTiles;
+    [SerializeField] private Snek snek;
+    [SerializeField] private Camera mainCamera;
+    
+    private Collision collision;
     private CellularAutomata cellularAutomata;
     private FoodSpawner foodSpawner;
     private Body body;
-
-    [SerializeField] private Snek snek;
-    private Collision collision;
-
+    
+    private List<Vector2Int> playableTiles;
+    private GameObject[,] tiles;
+    public Vector2Int TileSize => tileSize;
+    
     private string seed;
     private System.Random pseudoRandom;
-
-    public Vector2Int TileSize => tileSize;
 
     private void Awake()
     {
@@ -36,7 +34,6 @@ public class Grid : MonoBehaviour
         body = snek.GetComponent<Body>();
 
         collision = GetComponent<Collision>();
-
         playableTiles = GetComponent<FloodFill>().GetBiggestCave(cellularAutomata.Grid);
         tiles = new GameObject[gridSize.x, gridSize.y];
         FillGrid();
@@ -134,28 +131,7 @@ public class Grid : MonoBehaviour
         int index = playableTiles.IndexOf(kindaMiddleTile);
         return playableTiles[index];
     }
-
-    private void SetCameraSize()
-    {
-        (Vector2Int top, Vector2Int bottom) = GetPlayableSize();
-        Vector2 bottomCorner = GridToWorld(top, tileSize);
-        Vector2 topCorner =GridToWorld(bottom, tileSize);
-        Vector3 mid = new Vector3((topCorner.x + bottomCorner.x) / 2, 
-                                    (topCorner.y + bottomCorner.y) / 2, camera.transform.position.z);
-        camera.transform.position = mid;
-
-        float gridRatio = (topCorner.x - bottomCorner.x) / (topCorner.y + - bottomCorner.y);
-        if (camera.aspect >= gridRatio)
-        {
-            camera.orthographicSize = topCorner.y / 2;
-        }
-        else
-        {
-            float difference = gridRatio / camera.aspect;
-            camera.orthographicSize = topCorner.y / 2 * difference;
-        }
-    }
-
+    
     private (Vector2Int, Vector2Int) GetPlayableSize()
     {
         Vector2Int smallestPoints = gridSize;
@@ -182,4 +158,24 @@ public class Grid : MonoBehaviour
         return (smallestPoints, biggestPoints);
     }
 
+    private void SetCameraSize()
+    {
+        (Vector2Int top, Vector2Int bottom) = GetPlayableSize();
+        Vector2 bottomCorner = GridToWorld(top, tileSize);
+        Vector2 topCorner =GridToWorld(bottom, tileSize);
+        Vector3 mid = new Vector3((topCorner.x + bottomCorner.x) / 2, 
+                                    (topCorner.y + bottomCorner.y) / 2, mainCamera.transform.position.z);
+        mainCamera.transform.position = mid;
+
+        float gridRatio = (topCorner.x - bottomCorner.x) / (topCorner.y + - bottomCorner.y);
+        if (mainCamera.aspect >= gridRatio)
+        {
+            mainCamera.orthographicSize = topCorner.y / 2;
+        }
+        else
+        {
+            float difference = gridRatio / mainCamera.aspect;
+            mainCamera.orthographicSize = topCorner.y / 2 * difference;
+        }
+    }
 }

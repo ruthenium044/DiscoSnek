@@ -6,7 +6,6 @@ public class FoodSpawner : MonoBehaviour
 {
     [SerializeField] private List<GameObject> foodPrefabs;
     [SerializeField] private float foodSpawnTime;
-
     [HideInInspector] public List<GameObject> foods;
 
     public IEnumerator SpawnFood(Grid grid)

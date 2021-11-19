@@ -4,7 +4,6 @@ public class CellularAutomata : MonoBehaviour
 {
     [SerializeField, Range(0, 100)] private int fillPercentage;
     [SerializeField] private int lifecycleIterations;
-
     private string seed;
     private int[,] grid;
 

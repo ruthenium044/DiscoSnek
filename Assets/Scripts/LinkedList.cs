@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class LinkedList<T>
 {
     public class Node
@@ -12,10 +8,7 @@ public class LinkedList<T>
         public T Data
         {
             get => data;
-            set => data = value;
         }
-
-        public Node NextNode => nextNode;
 
         internal Node(T d)
         {

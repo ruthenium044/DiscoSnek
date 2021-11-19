@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
 
 public class Body : MonoBehaviour
 {
     [SerializeField] private GameObject bodyPrefab;
     [SerializeField] private GameObject tailPrefab;
-
     private LinkedList<GameObject> bodyParts;
 
     public LinkedList<GameObject> BodyParts => bodyParts;
